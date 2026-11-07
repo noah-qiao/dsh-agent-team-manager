@@ -1,7 +1,9 @@
 # dsh-agent-manager
 
-右侧栏「团队管理」：把当前会话所在智能体团队的**成员与任务**放进右侧栏，并提供三条
-**做错了也能改回来**的写操作——接手 / 放回 / 改一改。
+右侧栏「团队管理」：把当前会话所在智能体团队的**成员与任务**的可视化操作放进右侧栏。
+
+<img width="1680" height="2000" alt="image" src="https://github.com/user-attachments/assets/cf27d8cc-1618-48a1-bf7e-bc47aae0e73d" />
+
 
 ## 前置条件
 
@@ -29,44 +31,7 @@ macOS 桌面 App 用 `desktop`；Web / headless 分别是 `web`、`headless`。
 
 ### 2. 把包装进 profile
 
-```sh
-dsh plugin --profile desktop add agent-team-manager
-```
-
-说明几点，都是容易踩的：
-
-- **`--profile` 是必填**。`dsh plugin` 只是把参数转发给 profile 目录里的 pnpm，
-  不带 profile 会直接报 `required option '--profile <name>' not specified`。
-- **用绝对路径**，且是**含 `package.json` 的包根目录**。它会被写成 `link:`，
-  之后改源码即生效，不需要重装。
-- **不要用 `pnpm add` 手动装**，也不要手改 profile 的 `package.json`；
-  用这个命令，安装与链接由它负责。
-
-### 3. 把 bundle 选进 profile
-
-上一步只装了包，**还要让 profile 加载它**。在 profile 的 `package.json` 里，
-把包名追加到 `dsh.profile.bundles` 数组：
-
-```json
-{
-  "dsh": {
-    "profile": {
-      "bundles": [
-        "@deepseek-ai/dsh-base",
-        "@deepseek-ai/dsh-web-app",
-        "@deepseek-ai/dsh-experimental-agent-team-profile",
-        "@local/dsh-agent-manager"
-      ]
-    }
-  }
-}
-```
-
-本包的 `package.json` 里有 `dsh.bundle.patch → ./cordis.patch.yml`，该 patch 会插入
-`id: agent-manager` 这一行，Host 半随 profile 一起加载。
-
-> 在 dsh 内部操作时，等价做法是用 `plugin_manager` 的 `install_bundle`
-> （`target` 传同一个绝对路径）。它会一并完成第 2、3 步，不需要再去碰 profile 文件。
+从桌面客户端安装：在添加插件输入框中粘贴 `https://github.com/noah-qiao/agent-team-manager`
 
 ### 4. 重启并验证
 
