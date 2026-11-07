@@ -1,0 +1,5 @@
+# Bundle layer of @local/dsh-agent-manager. `dsh plugin add <path>` composes this
+# layer after every profile bundle, so the Host half loads with the profile.
+- insert:
+    - id: agent-manager
+      name: '@local/dsh-agent-manager'
